@@ -33,7 +33,6 @@ class VQDataset(Dataset):
         return len(self.embs)
 
     def __getitem__(self, index: int):
-        # 返回原始 ID 索引以及 Embedding，用于计算流行度权重
         return self.idx[index], self.embs[index]
 
 
