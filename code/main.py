@@ -26,20 +26,14 @@ user_emb, item_emb = utils.read_cf_embeddings(model_name, checkpoint_name)
 train_data_raw, test_data_raw, train_codebook_df, test_codebook_df, item_num, user_num = dataset.read_data(data_name)
 pop_weights = utils.get_popularity(data_name, item_emb.shape[0])
 
-# 1. train.txt 长度为 K-1
-# 2. test.txt 长度为 K
-
 train_data = [line.strip() for line in train_data_raw]
 test_data = [line.strip() for line in test_data_raw]
 
-# 将 DataFrame 转换为 dataset.py 期望的字符串列表格式: "user_cb item_cb1 item_cb2..."
 train_codebook_data = [f"{str(row['user_cb_id']).strip()} {str(row['item_cb_id']).strip()}" for _, row in train_codebook_df.iterrows()]
 test_codebook_data = [f"{str(row['user_cb_id']).strip()} {str(row['item_cb_id']).strip()}" for _, row in test_codebook_df.iterrows()]
 
-# 验证集使用长度为 K-1 的 train_data，提取目标自然对应第 K-1 个物品
 valid_data = train_data.copy()
 valid_codebook_data = train_codebook_data.copy()
-# =========================================================================
 
 if not args.no_data_augment:
     train_data_aug, train_codebook_data_aug = utils.data_augment(train_data, train_codebook_data, shred=2,
