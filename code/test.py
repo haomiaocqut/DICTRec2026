@@ -24,7 +24,6 @@ def backbone(data_name, test_rec_loader, user_emb, item_emb, item_num, args, dev
     item_vq.to(device)
     item_vq.eval()
 
-    # [算法升级]：对数平滑的长尾惩罚
     pop = pop_weights.to(device)
     pop_log = torch.log(pop + 1.0)
     pop_penalty = pop_log / (pop_log.max() + 1e-8)
